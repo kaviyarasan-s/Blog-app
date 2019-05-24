@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<meta http-equiv="X-UA-Compatible" content="ie=edge" />
+<link rel="icon" href="/favicon.ico?v=2" type="image/x-icon" />
+<link rel="stylesheet"
+	href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+	integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T"
+	crossorigin="anonymous" />
+<link rel="stylesheet" href="css/style.css" />
+<title>Blog App</title>
+</head>
+<body>
+	<nav class="navbar navbar-expand-lg navbar-light bg-light">
+		<a class="navbar-brand" href="#">Blogger</a>
+		<button class="navbar-toggler" type="button" data-toggle="collapse"
+			data-target="#navbarSupportedContent"
+			aria-controls="navbarSupportedContent" aria-expanded="false"
+			aria-label="Toggle navigation">
+			<span class="navbar-toggler-icon"></span>
+		</button>
+
+		<div class="collapse navbar-collapse" id="navbarSupportedContent">
+			<ul class="navbar-nav mr-auto" id="left-nav">
+				<li class="nav-item"><a class="nav-link" href="index.html">Home</a>
+				</li>
+				<li class="nav-item"><a class="nav-link" href="allpost.html">All
+						Posts</a></li>
+			</ul>
+			<div class="form-inline my-2 my-lg-0" id="right-nav"></div>
+		</div>
+	</nav>
+	<div class="container">
+		<div class="row">
+			<div class="col-md-12">
+				<h2 class="all-post-head">My Posts</h2>
+				<div class="row">
+					<div class="col-md-8">
+						<div class="container card post-cont-all">
+							<img src="https://via.placeholder.com/750x300"
+								class="img-fluid card-img-top img-post-all"
+								alt="Responsive image" />
+							<div class="card-body">
+								<h3 class="post-title-all card-title">Post Title</h3>
+								<p class="post-content-all card-text">Lorem ipsum dolor sit
+									amet consectetur, adipisicing elit. Assumenda eum soluta
+									tempore cum corporis sapiente, odit unde ea aut veritatis
+									ducimus inventore, ipsa ut, facere id quisquam. Laboriosam,
+									doloremque tenetur!</p>
+								<button class="btn btn-primary btn-post-all" value="1">
+									Read More</button>
+							</div>
+							<div class="card-footer text-muted">
+								<p class="footer-post-all">Posted By ABC</p>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<script src="https://code.jquery.com/jquery-3.4.1.min.js"
+		integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="
+		crossorigin="anonymous"></script>
+	<script
+		src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
+		integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
+		crossorigin="anonymous"></script>
+	<script
+		src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+		integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+		crossorigin="anonymous"></script>
+	<script>
+            $(document).ready(() => {
+                if (!localStorage.getItem("loggedIn")) {
+                    window.location.href = "login.html";
+                } else {
+                	const name = JSON.parse(localStorage.getItem('user')).name;
+                    $("#right-nav").append(
+                        "<p style='margin-right: 15px; margin-top: 12px;'>Logged In as <b>" + name + "</b></p><button id='btn-logout' class='btn btn-outline-primary my-2 my-sm-0' type='submit'>Logout</button>"
+                    );
+                    $("#left-nav").append(
+                        "<li class='nav-item'><a class='nav-link' href='addposts.html'>Add Post</a></li>"
+                    );
+                    $("#left-nav").append(
+                        "<li class='nav-item'><a class='nav-link' href='addcategory.html'>Add Category</a></li>"
+                    );
+                    $("#btn-logout").click(() => {
+                        localStorage.removeItem("loggedIn");
+                        localStorage.removeItem("category");
+                        localStorage.removeItem("user");
+                        window.location.href = "index.html";
+                    });
+                    $(".btn-post-all").click(e => {
+                        localStorage.setItem("singlePost", e.target.value);
+                        window.location.href = "singlepost.html";
+                    });
+                }
+            });
+        </script>
+</body>
+</html>

@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<meta http-equiv="X-UA-Compatible" content="ie=edge" />
+<link rel="icon" href="/favicon.ico?v=2" type="image/x-icon" />
+<link rel="stylesheet"
+	href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+	integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T"
+	crossorigin="anonymous" />
+<link rel="stylesheet" href="css/style.css" />
+<title>Blog App</title>
+</head>
+<body>
+	<nav class="navbar navbar-expand-lg navbar-light bg-light">
+		<a class="navbar-brand" href="#">Blogger</a>
+		<button class="navbar-toggler" type="button" data-toggle="collapse"
+			data-target="#navbarSupportedContent"
+			aria-controls="navbarSupportedContent" aria-expanded="false"
+			aria-label="Toggle navigation">
+			<span class="navbar-toggler-icon"></span>
+		</button>
+
+		<div class="collapse navbar-collapse" id="navbarSupportedContent">
+			<ul class="navbar-nav mr-auto" id="left-nav">
+				<li class="nav-item"><a class="nav-link" href="index.html">Home</a>
+				</li>
+				<li class="nav-item"><a class="nav-link" href="allpost.html">All
+						Posts</a></li>
+			</ul>
+			<div class="form-inline my-2 my-lg-0" id="right-nav"></div>
+		</div>
+	</nav>
+	<div class="container">
+		<div class="row">
+			<div class="col-md-12">
+				<div class="alert alert-danger text-center alert-msg" role="alert">
+					Unable To Add New Post</div>
+			</div>
+			<div class="col-md-12 container-login">
+				<form class="form-container">
+					<div class="form-group">
+						<label for="postTitle">Post Title</label> <input type="text"
+							class="form-control" id="postTitle" aria-describedby="emailHelp"
+							placeholder="Enter Post Title" required />
+					</div>
+					<div class="form-group">
+						<label for="category">Category Name</label> <select id="category"
+							name="category" class="form-control" required>
+							<option value='' selected disabled>Select A Category</option>
+						</select>
+					</div>
+					<div class="form-group">
+						<label for="imgURL">Post Image Url</label> <input type="url"
+							class="form-control" id="imgURL" aria-describedby="emailHelp"
+							placeholder="Post Image Url" />
+					</div>
+					<div class="form-group">
+						<label for="postContent">Post Content</label>
+						<textarea class="form-control" placeholder="Post Content"
+							id="postContent" rows="3" required></textarea>
+					</div>
+					<button type="submit" class="btn btn-primary">Add Post</button>
+				</form>
+			</div>
+		</div>
+	</div>
+	<script src="https://code.jquery.com/jquery-3.4.1.min.js"
+		integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="
+		crossorigin="anonymous"></script>
+	<script
+		src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
+		integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
+		crossorigin="anonymous"></script>
+	<script
+		src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+		integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+		crossorigin="anonymous"></script>
+	<script>
+            $(document).ready(() => {
+                if (!localStorage.getItem("loggedIn")) {
+                    window.location.href = "login.html";
+                } else {
+                	$.ajax({
+                    	url: 'BlogPost',
+                      	type: 'get',
+                      	success: function(data) {
+                      		const category = JSON.parse(data);
+                      		category.forEach(c => {
+                      			$("#category").append("<option value=" + c.id + ">" + c.name + "</option>");                      			
+                      		})
+                      	}
+                 	});
+                	const name = JSON.parse(localStorage.getItem('user')).name;
+                    $("#right-nav").append(
+                        "<p style='margin-right: 15px; margin-top: 12px;'>Logged In as <b>" + name + "</b></p><button id='btn-logout' class='btn btn-outline-primary my-2 my-sm-0' type='submit'>Logout</button>"
+                    );
+                    $("#left-nav").append(
+                        "<li class='nav-item'><a class='nav-link' href='myposts.html'>My Posts</a></li>"
+                    );
+                    $("#left-nav").append(
+                        "<li class='nav-item'><a class='nav-link' href='addcategory.html'>Add Category</a></li>"
+                    );
+                    $("#btn-logout").click(() => {
+                        localStorage.removeItem("loggedIn");
+                        localStorage.removeItem("category");
+                        localStorage.removeItem("user");
+                        window.location.href = "index.html";
+                    });
+                    $("form").submit(e => {
+                        e.preventDefault();
+                        const postTitle = $("#postTitle").val();
+                        let imgURL = $("#imgURL").val();
+                        const category = $("#category").val();
+                        const postContent = $("#postContent").val();
+                        const userId = JSON.parse(localStorage.getItem('user')).id.toString();
+                        if (imgURL === "") {
+                        	imgURL = "https://via.placeholder.com/750x300";
+                        }
+                        const post = {
+                        	title: postTitle,
+                       		content: postContent,
+                        	url: imgURL,
+                        	userId,
+                       		catogery: {
+                       			id: category
+                       		}
+                        };
+                        console.log(post);
+                        const params = JSON.stringify(post);
+                        $.ajax({
+                        	url: 'BlogPost',
+                          	type: 'post',
+                          	data: {
+                          		obj: params
+                          	},
+                          	success: function(data) {
+                          		const res = JSON.parse(data);
+                          		if(res === 'success') {
+                          			window.location.href = "allpost.html"
+                          		} else {
+                          			$('.alert-msg').attr('style','display:block !important');
+                          			setInterval(() => {
+                          				$('.alert-msg').attr('style','display:none !important');
+                          			},3000);
+                          			$("#imgURL").val("");
+                          			$("#postTitle").val("");
+                          			$("#category").val("");
+                          			$("#postContent").val("");
+                          		}
+                          	}
+                     	});
+                    });
+                }
+            });
+        </script>
+</body>
+</html>

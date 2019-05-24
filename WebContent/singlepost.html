@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+        <link rel="icon" href="/favicon.ico?v=2" type="image/x-icon" />
+        <link
+            rel="stylesheet"
+            href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+            integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T"
+            crossorigin="anonymous"
+        />
+        <link rel="stylesheet" href="css/style.css" />
+        <title>Blog App</title>
+    </head>
+    <body>
+        <nav class="navbar navbar-expand-lg navbar-light bg-light">
+            <a class="navbar-brand" href="#">Blogger</a>
+            <button
+                class="navbar-toggler"
+                type="button"
+                data-toggle="collapse"
+                data-target="#navbarSupportedContent"
+                aria-controls="navbarSupportedContent"
+                aria-expanded="false"
+                aria-label="Toggle navigation"
+            >
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav mr-auto" id="left-nav">
+                    <li class="nav-item">
+                        <a class="nav-link" href="index.html"
+                            >Home <span class="sr-only">(current)</span></a
+                        >
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="allpost.html">All Posts</a>
+                    </li>
+                </ul>
+                <div class="form-inline my-2 my-lg-0" id="right-nav"></div>
+            </div>
+        </nav>
+        <div
+            class="d-flex justify-content-center"
+            id="loader"
+            style="margin-top: 30vh;"
+        >
+            <div class="spinner-border" role="status">
+                <span class="sr-only">Loading...</span>
+            </div>
+        </div>
+        <div class="container" id="single-post">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="row">
+                        <div class="cont-single-post col-md-12">
+                            <div class="container card post-cont-all">
+                                <img
+                                    src="https://via.placeholder.com/750x300"
+                                    class="img-fluid card-img-top img-post-all"
+                                    alt="Responsive image"
+                                />
+                                <div class="card-body">
+                                    <h2 class="post-title-all card-title">
+                                        Post Title
+                                    </h2>
+                                    <p class="post-content-all card-text">
+                                        Lorem ipsum dolor sit amet consectetur,
+                                        adipisicing elit. Assumenda eum soluta
+                                        tempore cum corporis sapiente, odit unde
+                                        ea aut veritatis ducimus inventore, ipsa
+                                        ut, facere id quisquam. Laboriosam,
+                                        doloremque tenetur!
+                                    </p>
+                                </div>
+                                <div class="card-footer text-muted author-disp">
+                                    <img
+                                        src="https://robohash.org/37S.png?set=set2&size=150x150"
+                                        alt="author-img"
+                                        class="img-responsive img-author"
+                                    />
+                                    <p class="footer-post-all">
+                                        Posted By ABC
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <script
+            src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+            integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+            crossorigin="anonymous"
+        ></script>
+        <script
+            src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
+            integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
+            crossorigin="anonymous"
+        ></script>
+        <script
+            src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+            integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+            crossorigin="anonymous"
+        ></script>
+        <script>
+            $(document).ready(() => {
+                $("#single-post").hide();
+                // $("#loader").attr("style", "display:none !important");
+                if (!localStorage.getItem("loggedIn")) {
+                    $("#right-nav").append(
+                        "<button id='btn-login' class='btn btn-outline-primary my-2 my-sm-0' type='submit'>Login</button>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<button id='btn-register' class='btn btn-outline-success my-2 my-sm-0' type='submit'>Register</button>"
+                    );
+                } else {
+                    $("#right-nav").append(
+                        "<p style='margin-right: 15px; margin-top: 12px;'>Logged In as <b>Name</b></p><button id='btn-logout' class='btn btn-outline-primary my-2 my-sm-0' type='submit'>Logout</button>"
+                    );
+                    $("#left-nav").append(
+                        "<li class='nav-item'><a class='nav-link' href='myposts.html'>My Posts</a></li><li class='nav-item'><a class='nav-link' href='addposts.html'>Add Post</a></li>"
+                    );
+                    $("#left-nav").append(
+                        "<li class='nav-item'><a class='nav-link' href='addcategory.html'>Add Category</a></li>"
+                    );
+                }
+                $("#btn-logout").click(() => {
+                    localStorage.removeItem("loggedIn");
+                    localStorage.removeItem("user");
+                    localStorage.removeItem("category");
+                    window.location.href = "index.html";
+                });
+                $("#btn-login").click(() => {
+                    window.location.href = "login.html";
+                });
+                $("#btn-register").click(() => {
+                    window.location.href = "register.html";
+                });
+                $("btn-logout").click(() => {
+                    localStorage.clear();
+                    window.location.href = "index.html";
+                });
+            });
+        </script>
+    </body>
+</html>

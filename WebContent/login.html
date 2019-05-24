@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<meta http-equiv="X-UA-Compatible" content="ie=edge" />
+<link rel="icon" href="/favicon.ico?v=2" type="image/x-icon" />
+<link rel="stylesheet"
+	href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+	integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T"
+	crossorigin="anonymous" />
+<link rel="stylesheet" href="css/style.css" />
+<title>Blog App</title>
+</head>
+<body>
+	<nav class="navbar navbar-expand-lg navbar-light bg-light">
+		<a class="navbar-brand" href="#">Blogger</a>
+		<button class="navbar-toggler" type="button" data-toggle="collapse"
+			data-target="#navbarSupportedContent"
+			aria-controls="navbarSupportedContent" aria-expanded="false"
+			aria-label="Toggle navigation">
+			<span class="navbar-toggler-icon"></span>
+		</button>
+
+		<div class="collapse navbar-collapse" id="navbarSupportedContent">
+			<ul class="navbar-nav mr-auto">
+				<li class="nav-item"><a class="nav-link" href="index.html">Home
+						<span class="sr-only">(current)</span>
+				</a></li>
+				<li class="nav-item"><a class="nav-link" href="allpost.html">All
+						Posts</a></li>
+			</ul>
+			<div class="form-inline my-2 my-lg-0">
+				<button id="btn-login" class="btn btn-outline-primary my-2 my-sm-0"
+					type="submit">Login</button>
+				&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+				<button id="btn-register"
+					class="btn btn-outline-success my-2 my-sm-0" type="submit">
+					Register</button>
+			</div>
+		</div>
+	</nav>
+	<div class="container">
+		<div class="row">
+			<div class="col-md-12">
+				<div class="alert alert-danger text-center alert-msg" role="alert">
+					Wrong Email / Password
+				</div>
+			</div>
+			<div class="col-md-12 container-login">
+				<form class="form-container">
+					<div class="form-group">
+						<label for="email">Email address</label> <input type="email"
+							class="form-control" name="email" id="email"
+							aria-describedby="emailHelp" placeholder="Enter email"
+							autocomplete="username email"
+							pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$"
+							title="Invalid Email Address" required />
+					</div>
+					<div class="form-group">
+						<label for="password">Password</label> <input type="password"
+							autocomplete="current-password" class="form-control"
+							name="password" id="password" placeholder="Password"
+							pattern=".{8,}" title="Eight or more characters" required />
+					</div>
+					<button type="submit" class="btn btn-primary">Login</button>
+				</form>
+			</div>
+		</div>
+	</div>
+	<script src="https://code.jquery.com/jquery-3.4.1.min.js"
+		integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="
+		crossorigin="anonymous"></script>
+	<script
+		src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
+		integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
+		crossorigin="anonymous"></script>
+	<script
+		src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+		integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+		crossorigin="anonymous"></script>
+	<script>
+            $(document).ready(() => {
+                if (localStorage.getItem("loggedIn")) {
+                    window.location.href = "allpost.html";
+                } else {
+                    $("#btn-login").click(() => {
+                        window.location.href = "login.html";
+                    });
+                    $("#btn-register").click(() => {
+                        window.location.href = "register.html";
+                    });
+                    $("form").submit(e => {
+                        e.preventDefault();
+                        const email = $("#email").val();
+                        const password = $("#password").val();
+                        const data = {
+                        	email,
+                        	password
+                        };
+                    	const params = JSON.stringify(data);
+                        $.ajax({
+                        	url: 'Login',
+                          	type: 'post',
+                          	data: {
+                          		obj: params
+                          	},
+                          	success: function(data) {
+                          		const res = JSON.parse(data);
+                          		const user = {
+                          			id: res.id,
+                          			name: res.name,
+                          			email: res.email,
+                          			url: res.url
+                          		};
+                          		if (user.id === 0) {
+                          			$('.alert-msg').attr('style','display:block !important');
+                          			setInterval(() => {
+                          				$('.alert-msg').attr('style','display:none !important');
+                          			},3000);
+                          			$("#email").val("");
+                          			$("#password").val("");
+                          		} else {
+                          			localStorage.setItem("loggedIn", true);
+                       		 		localStorage.setItem("user", JSON.stringify(user));
+                       		 		window.location.href = "allpost.html";
+                          		}
+                          	}
+                     	});
+                    });
+                }
+            });
+        </script>
+</body>
+</html>

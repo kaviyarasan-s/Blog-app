@@ -1,0 +1,5 @@
+create table blog_registration(user_id number(30) constraint userid_pk PRIMARY KEY ,name varchar2(100) not null,email varchar2(100) not null,password varchar2(100) not null,img_url varchar2(300) not null);
+create table blog_post(post_id number(30) constraint postid_pk PRIMARY KEY,title varchar2(100) not null,content varchar2(4000)not null,img_url varchar2(255)not null,catogery_id number(30)
+references blog_catogery(catogery_id)
+);
+create table blog_catogery(catogery_id number(30)constraint catogeryid_pk PRIMARY KEY,catogery varchar2(255)not null);
