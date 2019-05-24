@@ -34,6 +34,10 @@
 	</nav>
 	<div class="container">
 		<div class="row">
+			<div class="col-md-12">
+				<div class="alert alert-danger text-center alert-msg" role="alert">
+					Failed To Add</div>
+			</div>
 			<div class="col-md-12 container-login">
 				<form class="form-container">
 					<div class="form-group">
@@ -77,9 +81,9 @@
                     });
                     $("form").submit(e => {
                         e.preventDefault();
-                        const category = $("#category").val();
+                        const category = $("#category").val().toUpperCase();
                         const data = {
-                           			name: category
+                        	name: category
                        	};
                        	const params = JSON.stringify(data);
                         $.ajax({
@@ -90,6 +94,15 @@
                             },
                             success: function(data) {
                             	console.log(data);
+                            	if(data === 'success') {
+                            		window.location.href = "allpost.html";
+                            	} else {
+                            		$('.alert-msg').attr('style','display:block !important');
+                          			setInterval(() => {
+                          				$('.alert-msg').attr('style','display:none !important');
+                          			},3000);
+                          			$("#category").val("");
+                            	}
                             }
                         });
                     });

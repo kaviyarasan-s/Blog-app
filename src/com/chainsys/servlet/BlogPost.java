@@ -35,10 +35,11 @@ public class BlogPost extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		PostService postService = new PostService();
-		ArrayList<Catogery> catogeryList = postService.displayCatogery();
+		ArrayList<Post> postList=postService.displayPost();
 		Gson gson = new Gson();
-		String catogeries = gson.toJson(catogeryList);
-		response.getWriter().write(catogeries);
+		String posts = gson.toJson(postList);
+		response.getWriter().write(posts);
+
 	}
 
 	/**
@@ -51,11 +52,9 @@ public class BlogPost extends HttpServlet {
 			String message = "";
 			if (!request.getParameter("obj").isEmpty()) {
 				String postJson = request.getParameter("obj");
-				System.out.println("dnbsaf"+postJson);
 				PostService postService = new PostService();
 				Gson gson = new Gson();
 				Post post = gson.fromJson(postJson, Post.class);
-				postService.addPost(post);
 				message = gson.toJson(postService.addPost(post));
 				response.getWriter().write(message);
 			} else {

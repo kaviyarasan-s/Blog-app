@@ -83,13 +83,13 @@
                     window.location.href = "login.html";
                 } else {
                 	$.ajax({
-                    	url: 'BlogPost',
+                    	url: 'Catogery',
                       	type: 'get',
                       	success: function(data) {
                       		const category = JSON.parse(data);
                       		category.forEach(c => {
                       			$("#category").append("<option value=" + c.id + ">" + c.name + "</option>");                      			
-                      		})
+                      		});
                       	}
                  	});
                 	const name = JSON.parse(localStorage.getItem('user')).name;
@@ -127,7 +127,6 @@
                        			id: category
                        		}
                         };
-                        console.log(post);
                         const params = JSON.stringify(post);
                         $.ajax({
                         	url: 'BlogPost',

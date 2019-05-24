@@ -14,19 +14,18 @@ public class CatogeryDAO {
 
 	private PreparedStatement preparedStatement;
 	public ArrayList<Catogery> getCatogery() {
-
 		Connection connection = null;
 		PreparedStatement preparedStatement = null;
 		ResultSet resultSet = null;
-		ArrayList<Catogery> catogeries=null;
+		ArrayList<Catogery> catogeries= null;
 		try {
 			connection = ConnectionUtil.getConnection();
 			String sql = "select catogery_id,catogery from blog_catogery";
 			preparedStatement = connection.prepareStatement(sql);
 			resultSet = preparedStatement.executeQuery();
-			catogeries = new ArrayList<>();
-			Catogery catogery = new Catogery();
+			catogeries= new ArrayList<>();
 			while (resultSet.next()) {
+				Catogery catogery = new Catogery();
 				catogery.setId(resultSet.getInt("catogery_id"));
 				catogery.setName(resultSet.getString("catogery"));
 				catogeries.add(catogery);
@@ -41,6 +40,7 @@ public class CatogeryDAO {
 					e.printStackTrace();
 				}
 			}
+//		System.out.println(catogeries);
 		return catogeries;
 	}
 	public int addCatogery(String catogery) throws DuplicateException {

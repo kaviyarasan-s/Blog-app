@@ -61,11 +61,6 @@
 							placeholder="Enter email" required />
 					</div>
 					<div class="form-group">
-						<label for="imgURL">Profile Url</label> <input type="url"
-							name="imgURL" class="form-control" id="imgURL"
-							aria-describedby="emailHelp" placeholder="Profile Url" />
-					</div>
-					<div class="form-group">
 						<label for="password">Password</label> <input type="password"
 							name="password" class="form-control" id="password"
 							placeholder="Password" autocomplete="current-password"
@@ -102,11 +97,8 @@
                         e.preventDefault();
                         const name = $("#name").val();
                         const email = $("#email").val();
-                        let imgURL = $("#imgURL").val();
+                        let imgURL = "https://robohash.org/" + name + ".png?set=set2&size=150x150";
                         const password = $("#password").val();
-                        if (imgURL === "") {
-                        	imgURL = "https://robohash.org/" + name + ".png?set=set2&size=150x150";
-                        }
                         const data = {
                             name,
                         	email,

@@ -40,48 +40,7 @@
 		<div class="row">
 			<div class="col-md-12">
 				<h2 class="all-post-head">All Posts</h2>
-				<div class="row">
-					<div class="col-md-8">
-						<div class="container card post-cont-all">
-							<img src="https://via.placeholder.com/750x300"
-								class="img-fluid card-img-top img-post-all"
-								alt="Responsive image" />
-							<div class="card-body">
-								<h3 class="post-title-all card-title">Post Title</h3>
-								<p class="post-content-all card-text">Lorem ipsum dolor sit
-									amet consectetur, adipisicing elit. Assumenda eum soluta
-									tempore cum corporis sapiente, odit unde ea aut veritatis
-									ducimus inventore, ipsa ut, facere id quisquam. Laboriosam,
-									doloremque tenetur!</p>
-								<button class="btn btn-primary btn-post-all" value="1">
-									Read More</button>
-							</div>
-							<div class="card-footer text-muted author-disp">
-								<img src="https://robohash.org/37S.png?set=set2&size=150x150"
-									alt="author-img" class="img-responsive img-author" />
-								<p class="footer-post-all">Posted By ABC</p>
-							</div>
-						</div>
-					</div>
-					<div class="col-md-4">
-						<div class="card">
-							<h5 class="card-header">Categories</h5>
-							<div class="card-body">
-								<div class="row">
-									<div class="col-sm-6 col-xs-6">
-										<ul class="list-unstyled mb-0">
-											<li><a href="#">Web Design</a></li>
-										</ul>
-									</div>
-									<div class="col-sm-6 col-xs-6 tal">
-										<ul class="list-unstyled mb-0">
-											<li><a href="#">JavaScript</a></li>
-										</ul>
-									</div>
-								</div>
-							</div>
-						</div>
-					</div>
+				<div class="row" id='posts'>
 				</div>
 			</div>
 		</div>
@@ -99,8 +58,7 @@
 		crossorigin="anonymous"></script>
 	<script>
             $(document).ready(() => {
-                // $("#all-post").hide();
-                $('#loader').attr('style','display:none !important');
+                $("#all-post").hide();
                 if (!localStorage.getItem("loggedIn")) {
                     $("#right-nav").append(
                         "<button id='btn-login' class='btn btn-outline-primary my-2 my-sm-0' type='submit'>Login</button>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<button id='btn-register' class='btn btn-outline-success my-2 my-sm-0' type='submit'>Register</button>"
@@ -132,6 +90,23 @@
                 $(".btn-post-all").click(e => {
                     localStorage.setItem("singlePost", e.target.value);
                     window.location.href = "singlepost.html";
+                });
+                $.ajax({
+                	url: 'BlogPost',
+                  	type: 'get',
+                  	success: function(data) {
+                  		const posts = JSON.parse(data);
+                  		posts.forEach(p => {
+                  			$("#posts").append('<div class="col-md-8"><div class="container card post-cont-all"><img src='+ p.url +' class="img-fluid card-img-top img-post-all" alt="Responsive image" /><div class="card-body"><h3 class="post-title-all card-title">' + p.title + '</h3><p class="post-content-all card-text">' + p.content + '</p><button class="btn btn-primary btn-post-all" value=' + p.id + '>Read More</button></div><div class="card-footer text-muted author-disp"><img src="https://robohash.org/' + p.name + '.png?set=set2&size=150x150" alt="author-img" class="img-responsive img-author" /><p class="footer-post-all">Posted By ' + p.userName.toUpperCase() + '</p></div></div></div>');
+                  		});
+                  		localStorage.removeItem('allPosts');
+                  		localStorage.setItem('allPosts', data);
+                  		$('#all-post').show();
+                  		$('#loader').attr('style','display:none !important');
+                  	}
+             	});
+                $(document).on('click', '.btn-post-all', e => {
+                	window.location.href = 'singlepost.html?id=' + e.target.value;
                 });
             });
         </script>

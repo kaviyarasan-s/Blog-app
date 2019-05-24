@@ -53,43 +53,7 @@
             </div>
         </div>
         <div class="container" id="single-post">
-            <div class="row">
-                <div class="col-md-12">
-                    <div class="row">
-                        <div class="cont-single-post col-md-12">
-                            <div class="container card post-cont-all">
-                                <img
-                                    src="https://via.placeholder.com/750x300"
-                                    class="img-fluid card-img-top img-post-all"
-                                    alt="Responsive image"
-                                />
-                                <div class="card-body">
-                                    <h2 class="post-title-all card-title">
-                                        Post Title
-                                    </h2>
-                                    <p class="post-content-all card-text">
-                                        Lorem ipsum dolor sit amet consectetur,
-                                        adipisicing elit. Assumenda eum soluta
-                                        tempore cum corporis sapiente, odit unde
-                                        ea aut veritatis ducimus inventore, ipsa
-                                        ut, facere id quisquam. Laboriosam,
-                                        doloremque tenetur!
-                                    </p>
-                                </div>
-                                <div class="card-footer text-muted author-disp">
-                                    <img
-                                        src="https://robohash.org/37S.png?set=set2&size=150x150"
-                                        alt="author-img"
-                                        class="img-responsive img-author"
-                                    />
-                                    <p class="footer-post-all">
-                                        Posted By ABC
-                                    </p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+            <div class="row" id='single-post'>
             </div>
         </div>
         <script
@@ -109,15 +73,16 @@
         ></script>
         <script>
             $(document).ready(() => {
+            	const url = new URL(window.location.href);
+            	const id = url.searchParams.get('id');
                 $("#single-post").hide();
-                // $("#loader").attr("style", "display:none !important");
                 if (!localStorage.getItem("loggedIn")) {
                     $("#right-nav").append(
                         "<button id='btn-login' class='btn btn-outline-primary my-2 my-sm-0' type='submit'>Login</button>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<button id='btn-register' class='btn btn-outline-success my-2 my-sm-0' type='submit'>Register</button>"
                     );
                 } else {
                     $("#right-nav").append(
-                        "<p style='margin-right: 15px; margin-top: 12px;'>Logged In as <b>Name</b></p><button id='btn-logout' class='btn btn-outline-primary my-2 my-sm-0' type='submit'>Logout</button>"
+                        "<p style='margin-right: 15px; margin-top: 12px;'>Logged In as <b>" + name + "</b></p><button id='btn-logout' class='btn btn-outline-primary my-2 my-sm-0' type='submit'>Logout</button>"
                     );
                     $("#left-nav").append(
                         "<li class='nav-item'><a class='nav-link' href='myposts.html'>My Posts</a></li><li class='nav-item'><a class='nav-link' href='addposts.html'>Add Post</a></li>"
@@ -142,6 +107,20 @@
                     localStorage.clear();
                     window.location.href = "index.html";
                 });
+                const allPosts = JSON.parse(localStorage.getItem('allPosts'));
+                let bool = true;
+                allPosts.forEach(p => {
+                	if(p.id == id) {
+                		bool = false;
+                		$('#single-post').append('<div class="col-md-12"><div class="row"><div class="cont-single-post col-md-12"><div class="container card post-cont-all"><img src=' + p.url + ' class="img-fluid card-img-top img-post-all" alt="Responsive image" /><div class="card-body"><h2 class="post-title-all card-title">' + p.title + '</h2><p class="post-content-all card-text">' + p.content + '</p></div><div class="card-footer text-muted author-disp"><img src="https://robohash.org/37S.png?set=set2&size=150x150" alt="author-img" class="img-responsive img-author" /><p class="footer-post-all">Posted By ' + p.userName + '</p></div></div></div></div></div>');
+                		$("#loader").attr("style", "display:none !important");
+                		$('#single-post').show();
+                	}
+                });
+                if(bool) {
+                	alert('Post Not Found');
+                	window.location.href = 'allpost.html';
+                }
             });
         </script>
     </body>

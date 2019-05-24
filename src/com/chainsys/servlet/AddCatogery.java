@@ -1,6 +1,7 @@
 package com.chainsys.servlet;
 
 import java.io.IOException;
+import java.util.ArrayList;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -10,12 +11,8 @@ import javax.servlet.http.HttpServletResponse;
 
 import com.chainsys.customexception.BlogException;
 import com.chainsys.model.Catogery;
-import com.chainsys.model.User;
 import com.chainsys.services.PostService;
 import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
 
 /**
  * Servlet implementation class Catogery
@@ -37,6 +34,11 @@ public class AddCatogery extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
+		PostService postService = new PostService();
+		ArrayList<Catogery> catogeryList = postService.displayCatogery();
+		Gson gson = new Gson();
+		String catogeries = gson.toJson(catogeryList);
+		response.getWriter().write(catogeries);
 	}
 
 	/**

@@ -12,8 +12,7 @@ public class PostService {
 
 	public ArrayList<Catogery> displayCatogery() {
 		CatogeryDAO catogeryDAO = new CatogeryDAO();
-		ArrayList<Catogery> catogeries = catogeryDAO.getCatogery();
-		return catogeries;
+		return catogeryDAO.getCatogery();
 
 	}
 
@@ -38,5 +37,10 @@ public class PostService {
 			message = "failed";
 		}
 		return message;
+	}
+	public ArrayList<Post> displayPost()
+	{
+		PostDAO postDAO = new PostDAO();
+		return postDAO.displayPosts();
 	}
 }

@@ -6,7 +6,9 @@ private String title;
 private String content;
 private String url;
 private int userId;
+private String userName;
 private Catogery catogery;
+
 public int getId() {
 	return id;
 }
@@ -37,6 +39,12 @@ public int getUserId() {
 public void setUserId(int userId) {
 	this.userId = userId;
 }
+public String getUserName() {
+	return userName;
+}
+public void setUserName(String userName) {
+	this.userName = userName;
+}
 public Catogery getCatogery() {
 	return catogery;
 }
@@ -53,6 +61,7 @@ public int hashCode() {
 	result = prime * result + ((title == null) ? 0 : title.hashCode());
 	result = prime * result + ((url == null) ? 0 : url.hashCode());
 	result = prime * result + userId;
+	result = prime * result + ((userName == null) ? 0 : userName.hashCode());
 	return result;
 }
 @Override
@@ -88,12 +97,16 @@ public boolean equals(Object obj) {
 		return false;
 	if (userId != other.userId)
 		return false;
+	if (userName == null) {
+		if (other.userName != null)
+			return false;
+	} else if (!userName.equals(other.userName))
+		return false;
 	return true;
 }
 @Override
 public String toString() {
 	return "Post [id=" + id + ", title=" + title + ", content=" + content + ", url=" + url + ", userId=" + userId
-			+ ", catogery=" + catogery + "]";
+			+ ", userName=" + userName + ", catogery=" + catogery + "]";
 }
-
 }
